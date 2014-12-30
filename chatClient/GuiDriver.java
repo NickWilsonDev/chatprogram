@@ -90,6 +90,13 @@ public class GuiDriver extends MessageSource implements MessageListener {
                 final ClientWrap wClient;
                 conversation = new JTextArea(10, 20);
                 try {
+                    /////////// trial////
+                    if (userName.isEmpty() || userName == null) {
+                        String errormsg = "Please enter an username";
+                        userName = JOptionPane.showInputDialog(errormsg);
+                    }
+
+                    
                     MultiuserChatClient client = new MultiuserChatClient(
                             hostname, port, userName, conversation);
                     client.connect();
@@ -143,7 +150,7 @@ public class GuiDriver extends MessageSource implements MessageListener {
     }
 
     /**
-     * A helper method that sets up the panel tha will ask for the username
+     * A helper method that sets up the panel tha will ask for the hostname
      * from the user.
      *
      * @param tempPanel a JPanel that will be the layout for getting host

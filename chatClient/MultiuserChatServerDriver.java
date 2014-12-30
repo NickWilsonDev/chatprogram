@@ -32,10 +32,11 @@ public class MultiuserChatServerDriver {
             MultiuserChatServer server = new MultiuserChatServer(port);
 
             while (server.isConnected()) {
+                System.out.println("Server is listening ...\n");
                 server.listen();
             }
         } catch (IOException io) {
-            System.out.println("couldnt initialize server");
+            System.out.println("couldnt initialize server\n");
             System.exit(0);
         }
     }
