@@ -107,8 +107,8 @@ public class NetworkInterface extends MessageSource implements Runnable{
             out.println(" " + message);
         } else {
             out.println(" " + message);
-            System.out.println("send Message in NetworkInterface is:: " 
-                                + message);
+            //System.out.println("send Message in NetworkInterface is:: " 
+            //                    + message);
             //conversation.append(message + "\n");
         }
     }
@@ -146,7 +146,6 @@ public class NetworkInterface extends MessageSource implements Runnable{
             
         } finally {
             connected = false;
-            
         }
     }
 

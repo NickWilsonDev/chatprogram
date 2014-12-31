@@ -114,7 +114,6 @@ public class MultiuserChatServer implements MessageListener {
      * @param source a MessageSource that the message was sent from
      */
     public void messageReceived(String message, MessageSource source) {
-        System.out.println("inside messageReceived message::");
         System.out.println(message);
         Scanner scan;
         String str = "";
@@ -125,6 +124,8 @@ public class MultiuserChatServer implements MessageListener {
             str = scan.next();
             if (str.equals("/hello")) {
                 helloCommand(scan, str);
+            } else if (str.equals("/help")) {
+                helpCommand(key);
             } else if (str.equals("/who")) {
                 whoCommand(key);
             } else if (str.equals("/msg")) {
@@ -140,6 +141,16 @@ public class MultiuserChatServer implements MessageListener {
                 }
             }  else if (str.equals("/red")) {
                 redCommand(scan, str);
+            } else if (str.equals("/blue")) {
+                blueCommand(scan, str);
+            } else if (str.equals("/green")) {
+                greenCommand(scan, str);
+            } else if (str.equals("/invert")) {
+                invertCommand(scan, str);
+            } else if (str.equals("/bold")) {
+                boldCommand(scan, str);
+            } else if (str.equals("/underline")) {
+                underlineCommand(scan, str);
             } else if (str.equals("/quit")) {
                 this.broadcast(" !!! " + key + " disconnected");
                 sourceClosed(source);
@@ -147,7 +158,7 @@ public class MultiuserChatServer implements MessageListener {
                 if (scan.hasNextLine()) {
                     scan.nextLine();
                 }
-                this.broadcast("<" + key + ">: " + message);
+                this.broadcast("<" + key + ">:" + message);
             }
         }
     }
@@ -195,6 +206,81 @@ public class MultiuserChatServer implements MessageListener {
     }
 
     /**
+     * A helper method that changes the text display to the blue color.
+     *
+     * @param scan a Scanner that is used to parse the rest of the string
+     * @param str a String that should contain the user's name
+     */
+    private void blueCommand(Scanner scan, String str) {
+        if (scan.hasNext()) {
+            str = scan.nextLine();
+            System.out.println("blue message ::" + str);
+            this.broadcast("<" + key + ">: " + "\033[34m"
+                               + str + "\033[0m");
+            }
+    }
+
+    /**
+     * A helper method that changes the text display to the green color.
+     *
+     * @param scan a Scanner that is used to parse the rest of the string
+     * @param str a String that should contain the user's name
+     */
+    private void greenCommand(Scanner scan, String str) {
+        if (scan.hasNext()) {
+            str = scan.nextLine();
+            System.out.println("green message ::" + str);
+            this.broadcast("<" + key + ">: " + "\033[32m"
+                               + str + "\033[0m");
+            }
+    }
+
+    /**
+     * A helper method that changes the text display to the inverted effect.
+     *
+     * @param scan a Scanner that is used to parse the rest of the string
+     * @param str a String that should contain the user's name
+     */
+    private void invertCommand(Scanner scan, String str) {
+        if (scan.hasNext()) {
+            str = scan.nextLine();
+            System.out.println("invert message ::" + str);
+            this.broadcast("<" + key + ">: " + "\033[7m"
+                               + str + "\033[27m");
+            }
+    }
+
+    /**
+     * A helper method that changes the text display to the bold effect.
+     *
+     * @param scan a Scanner that is used to parse the rest of the string
+     * @param str a String that should contain the user's name
+     */
+    private void boldCommand(Scanner scan, String str) {
+        if (scan.hasNext()) {
+            str = scan.nextLine();
+            System.out.println("bold message ::" + str);
+            this.broadcast("<" + key + ">: " + "\033[1m"
+                               + str + "\033[21m");
+            }
+    }
+
+    /**
+     * A helper method that changes the text display to the underline effect.
+     *
+     * @param scan a Scanner that is used to parse the rest of the string
+     * @param str a String that should contain the user's name
+     */
+    private void underlineCommand(Scanner scan, String str) {
+        if (scan.hasNext()) {
+            str = scan.nextLine();
+            System.out.println("underline message ::" + str);
+            this.broadcast("<" + key + ">: " + "\033[4m"
+                               + str + "\033[24m");
+            }
+    }
+
+    /**
      * A helper method that displays the currently connected users.
      *
      * @param key a String that contains the user's name
@@ -205,6 +291,31 @@ public class MultiuserChatServer implements MessageListener {
             NetworkInterface> entry : niHashMap.entrySet()) {
             ni.sendMessage("---> " + entry.getKey());
         }
+    }
+
+    /**
+     * A helper method that displays the available commands.
+     *
+     * @param key a String that contains the user's name
+     */
+    private void helpCommand(String key) {
+        NetworkInterface ni = niHashMap.get(key);
+        ni.sendMessage("/quit          ---> logout");   
+        ni.sendMessage("/help          ---> list of commands");
+        ni.sendMessage("/who           ---> list of current users");
+        ni.sendMessage("/msg           ---> send private message");
+        ni.sendMessage("/red           ---> " + "\033[91m" + 
+                       "makes text message red color" + "\033[0m");
+        ni.sendMessage("/blue          ---> " + "\033[34m" + 
+                       "makes text message blue color" + "\033[0m");
+        ni.sendMessage("/green         ---> " + "\033[32m" + 
+                       "makes text message green color" + "\033[0m");
+        ni.sendMessage("/bold          ---> " + "\033[1m" + 
+                       "makes text message bold" + "\033[21m");
+        ni.sendMessage("/underline     ---> " + "\033[4m" + 
+                       "makes text message underlined" + "\033[24m");
+        ni.sendMessage("/invert        --->"  + "\033[7m" + 
+                       " makes text message color inverted" + "\033[27m");
     }
 
     /**
