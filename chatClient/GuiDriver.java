@@ -17,6 +17,7 @@ import java.net.UnknownHostException;
 
 // swing stuff
 import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -95,7 +96,6 @@ public class GuiDriver extends MessageSource implements MessageListener {
                         String errormsg = "Please enter an username";
                         userName = JOptionPane.showInputDialog(errormsg);
                     }
-
                     
                     MultiuserChatClient client = new MultiuserChatClient(
                             hostname, port, userName, conversation);
@@ -213,16 +213,17 @@ public class GuiDriver extends MessageSource implements MessageListener {
     public void guiChat(ClientWrap clientw) {
         final MultiuserChatClient newClient = clientw.client;
         chatFrame = new JFrame();
-        chatPanel = new JPanel(new GridLayout(3, 1));
-        JPanel tempPanel = null; // used to setup rows
-        tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        chatPanel = new JPanel(); //new GridLayout(2, 1)); // was 2, 1
+        chatPanel.setLayout(new GridLayout(0, 1, 0, 3));
+        JPanel inputPanel = null; // used to setup rows
+        inputPanel = new JPanel(); //new FlowLayout(FlowLayout.CENTER));
         conversation.setLineWrap(true);
         conversation.setEditable(false);
         final JScrollPane chatTextPane = new JScrollPane(conversation,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.addMessageListener(this);
-        userInput = new JTextField();
+        userInput = new JTextField(20);
         userInput.setEnabled(true);
         userInput.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -241,12 +242,14 @@ public class GuiDriver extends MessageSource implements MessageListener {
                     }
             }
         });
-        chatPanel.add(userInput, BorderLayout.SOUTH);
-        chatPanel.add(chatTextPane, BorderLayout.CENTER);
-        chatPanel.setPreferredSize(new Dimension(500, 500));
+        chatPanel.add(chatTextPane); //, BorderLayout.CENTER);
         chatFrame = new JFrame("MultiUserChatClient");
         chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        chatFrame.setContentPane(chatPanel);
+        
+        chatFrame.setPreferredSize(new Dimension(500, 500));
+        chatFrame.add(userInput, BorderLayout.NORTH);//, BorderLayout.SOUTH);
+        chatFrame.add(chatPanel);//, BorderLayout.CENTER);
+        
         chatFrame.setLocationRelativeTo(null);
         chatFrame.pack();
         chatFrame.setVisible(true);
