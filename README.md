@@ -1,7 +1,8 @@
 chatprogram
 ===========
 
-This is both a chat client and server that supports multiple users. Also the repository includes a basic gui form of the client.
+This is both a chat client and server that supports multiple users. Also the repository includes a basic gui form of 
+the client.
 This was a school project for our networking course.
   Any functional form of a gui for the client could gain some extra credit points.
 
